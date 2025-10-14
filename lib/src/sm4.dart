@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:convert/convert.dart';
+
 import 'utils/utils.dart';
 
 enum SM4CryptoMode {
@@ -363,7 +365,7 @@ class SM4 {
 
   static void setKey(String key) {
     // 改用 utf8.decode
-    List<int> keyBytes = utf8.encode(key.substring(0, 16));
+    List<int> keyBytes = hex.decode(key.substring(0, 32));
     setKeyBytes(Uint8List.fromList(keyBytes));
   }
 
@@ -450,7 +452,7 @@ class SM4 {
       } else if (iv.length != 32) {
         throw Exception("IV must be a string of length 32");
       } else {
-        lastVector = utf8.encode(iv.substring(0, 32));
+        lastVector = hex.decode(iv.substring(0, 32));
       }
     }
     final key = (flag == SM4_ENCRYPT) ? _encryptKey : _decryptKey;
