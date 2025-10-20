@@ -1,7 +1,7 @@
 import 'dart:io';
-import 'package:dart_sm_new/src/sm2.dart';
-import 'package:dart_sm_new/src/sm3.dart';
-import 'package:dart_sm_new/src/sm4.dart';
+import 'package:dart_sm/src/sm2.dart';
+import 'package:dart_sm/src/sm3.dart';
+import 'package:dart_sm/src/sm4.dart';
 import 'package:test/test.dart';
 
 void main() async {
