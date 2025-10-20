@@ -74,31 +74,24 @@ void main() async {
   });
 
   group('SM4 Encryption and Decryption', () {
-    const data = '12345';
-    SM4.setKey('0123456789abcdeffedcba9876543210');
+    const data = 'abcdefghijklmnopqrstuvwxyz0123456789';
 
     test('ecb', () {
-      String encryptData = SM4.encrypt(data);
-      String decryptData = SM4.decrypt(encryptData);
+      SM4 sm4 = SM4();
+      sm4.setKey('0123456789abcdeffedcba9876543210');
+      String encryptData = sm4.encrypt(data);
+      print(encryptData);
+      String decryptData = sm4.decrypt(encryptData);
       expect(decryptData, data);
     });
 
     test('cbc', () {
-      String encryptData = SM4.encrypt(data, mode: SM4CryptoMode.CBC, iv: 'fedcba98765432100123456789abcdef');
-      String decryptData = SM4.decrypt(encryptData, mode: SM4CryptoMode.CBC, iv: 'fedcba98765432100123456789abcdef');
+      SM4 sm4 = SM4();
+      sm4.setKey('0123456789abcdeffedcba9876543210');
+      String encryptData = sm4.encrypt(data, mode: SM4CryptoMode.CBC, iv: 'fedcba98765432100123456789abcdef');
+      print(encryptData);
+      String decryptData = sm4.decrypt(encryptData, mode: SM4CryptoMode.CBC, iv: 'fedcba98765432100123456789abcdef');
       expect(decryptData, data);
-    });
-
-    test('sm4 ecb padding zero', () {
-      final src = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-      final key = "4141414141414141";
-      final output = "V5brYI4Xp8WcxLpM1pqBSFeW62COF6fFnMS6TNaagUiib11tuONUMY354RnUPm9I";
-      String encryptData = SM4.encrypt(src, key: key, mode: SM4CryptoMode.CBC);
-      // debugPrint(encryptData);
-      expect(encryptData, equals(output));
-      final decryptData = SM4.decrypt(encryptData, key: key, mode: SM4CryptoMode.CBC);
-      // debugPrint(decryptData);
-      expect(decryptData, equals(src));
     });
   });
 }

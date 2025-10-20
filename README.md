@@ -16,12 +16,6 @@
   - [ ] CTR模式
   - [ ] GCM模式
 
-# 安装
-```yaml
-dependencies:
-  dart_sm_new: ^0.1.10
-```
-
 # 使用方法
 ## SM2
 ### 生成密钥对
@@ -73,34 +67,18 @@ String hashValue = SM3.hash(data, key:'95cb90ad5ba0c7c0e2a556f0072626b3');
 String hashValue = SM3.hashBytes(data, key:'95cb90ad5ba0c7c0e2a556f0072626b3'); 
 ```
 ## SM4
-### 设置全局密钥，效率比每次加解密时设置密钥高
 ```dart
-SM4.setKey('0123456789abcdeffedcba9876543210');
-```
-### 加密解密
-```dart
+SM4 sm4 = SM4();
+sm4.setKey('0123456789abcdeffedcba9876543210');
 // 默认ECB模式
-String cipherText = SM4.encrypt(data);
-String plainText = SM4.encrypt(cipherText);
+String cipherText = sm4.encrypt(data);
+String plainText = sm4.encrypt(cipherText);
 // CBC模式
-String cipherText = SM4.encrypt(data,mode: SM4CryptoMode.CBC,iv: 'fedcba98765432100123456789abcdef');
-String plainText = SM4.decrypt(encryptData, mode: SM4CryptoMode.CBC,iv: 'fedcba98765432100123456789abcdef');
+String cipherText = sm4.encrypt(data,mode: SM4CryptoMode.CBC,iv: 'fedcba98765432100123456789abcdef');
+String plainText = sm4.decrypt(encryptData, mode: SM4CryptoMode.CBC,iv: 'fedcba98765432100123456789abcdef');
 //单独指定密钥
-String cipherText = SM4.encrypt(data, key: '0123456789abcdeffedcba9876543210');
-String plainText = SM4.encrypt(cipherText, key: '0123456789abcdeffedcba9876543210');
-```
-
-新增 iv 为空
-```
-final src = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-final key = "4141414141414141";
-final output = "V5brYI4Xp8WcxLpM1pqBSFeW62COF6fFnMS6TNaagUiib11tuONUMY354RnUPm9I";
-String encryptData = SM4.encrypt(src, key: key, mode: SM4CryptoMode.CBC);
-// debugPrint(encryptData);
-expect(encryptData, equals(output));
-final decryptData = SM4.decrypt(encryptData, key: key, mode: SM4CryptoMode.CBC);
-// debugPrint(decryptData);
-expect(decryptData, equals(src));
+String cipherText = sm4.encrypt(data, key: '0123456789abcdeffedcba9876543210');
+String plainText = sm4.encrypt(cipherText, key: '0123456789abcdeffedcba9876543210');
 ```
 
 # 致谢

@@ -317,8 +317,8 @@ class SM4 {
 
   static const int blockSize = 16;
 
-  static final _encryptKey = List<int>.filled(32, 0);
-  static final _decryptKey = List<int>.filled(32, 0);
+  final _encryptKey = List<int>.filled(32, 0);
+  final _decryptKey = List<int>.filled(32, 0);
 
   static int _readUint32BE(List<int> b, int i) {
     return ((b[i] & 0xff) << 24) | ((b[i + 1] & 0xff) << 16) | ((b[i + 2] & 0xff) << 8) | (b[i + 3] & 0xff);
@@ -363,13 +363,13 @@ class SM4 {
     return roundKey;
   }
 
-  static void setKey(String key) {
+  void setKey(String key) {
     // 改用 utf8.decode
     List<int> keyBytes = hex.decode(key.substring(0, 32));
     setKeyBytes(Uint8List.fromList(keyBytes));
   }
 
-  static void setKeyBytes(Uint8List key) {
+  void setKeyBytes(Uint8List key) {
     // 改用 utf8.decode
     List<int> keyBytes = key.toList();
     List<int> intermediateKeys = List<int>.filled(36, 0);
@@ -444,7 +444,7 @@ class SM4 {
     return input;
   }
 
-  static List<int> _crypto(List<int> data, int flag, SM4CryptoMode mode, String? iv) {
+  List<int> _crypto(List<int> data, int flag, SM4CryptoMode mode, String? iv) {
     List<int>? lastVector;
     if (mode == SM4CryptoMode.CBC) {
       if (iv == null) {
@@ -494,28 +494,28 @@ class SM4 {
     return output;
   }
 
-  static String encrypt(String plainText, {String? key, SM4CryptoMode mode = SM4CryptoMode.ECB, String? iv}) {
+  String encrypt(String plainText, {String? key, SM4CryptoMode mode = SM4CryptoMode.ECB, String? iv}) {
     if (key != null) setKey(key);
     List<int> input = utf8.encode(plainText);
     List<int> output = _crypto(input, SM4_ENCRYPT, mode, iv);
     return base64.encode(output);
   }
 
-  static String decrypt(String cipherText, {String? key, SM4CryptoMode mode = SM4CryptoMode.ECB, String? iv}) {
+  String decrypt(String cipherText, {String? key, SM4CryptoMode mode = SM4CryptoMode.ECB, String? iv}) {
     if (key != null) setKey(key);
     List<int> input = base64.decode(cipherText);
     List<int> output = _crypto(input, SM4_DECRYPT, mode, iv);
     return utf8.decode(output);
   }
 
-  static Uint8List encryptBytes(Uint8List plainText, {Uint8List? key, SM4CryptoMode mode = SM4CryptoMode.ECB, String? iv}) {
+  Uint8List encryptBytes(Uint8List plainText, {Uint8List? key, SM4CryptoMode mode = SM4CryptoMode.ECB, String? iv}) {
     if (key != null) setKeyBytes(key);
     List<int> input = plainText.toList();
     List<int> output = _crypto(input, SM4_ENCRYPT, mode, iv);
     return Uint8List.fromList(output);
   }
 
-  static Uint8List decryptBytes(Uint8List cipherText, {Uint8List? key, SM4CryptoMode mode = SM4CryptoMode.ECB, String? iv}) {
+  Uint8List decryptBytes(Uint8List cipherText, {Uint8List? key, SM4CryptoMode mode = SM4CryptoMode.ECB, String? iv}) {
     if (key != null) setKeyBytes(key);
     List<int> input = cipherText.toList();
     List<int> output = _crypto(input, SM4_DECRYPT, mode, iv);
